@@ -1,0 +1,19 @@
+services:
+  Vvent-database:
+    image: mariadb
+    restart: always
+    ports:
+      - "3310:3306"
+    env_file: 
+      - ./database/.env.dev
+    command: [
+      "--character-set-server=utf8mb4",
+      "--collation-server=utf8mb4_unicode_ci",
+    ]
+    volumes:
+      - ./database/database-data:/var/lib/mysql
+      - ./database/mariadb.cnf:/etc/mysql/mariadb.cnf
+      # Pointer vers un dossier qui aura des scripts d'initialisation de notre base
+      #- ./database/dev-initdb.d:/docker-entrypoint-initdb.d
+      # Ajouter le DDL qui va tourner en dernier
+      - ./database/ddl/ddl.sql:/docker-entrypoint-initdb.d/999-ddl.sql

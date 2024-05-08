@@ -1,21 +1,20 @@
-import Fastify, { FastifyInstance, RouteShorthandOptions} from "fastify";
-import { Server, IncomingMessage, ServerResponse } from "http";
+import Express from 'express';
+import { ServerResponse } from 'http';
+import { Database } from './classes/Database';
+import { FieldPacket, QueryError, QueryResult, RowDataPacket } from 'mysql2';
 
-const server: FastifyInstance = Fastify({});
+const app = Express();
 
-server.get('/', async function handler(request, reply) {
-    return 'Hello World';
+app.get('/', async (request: Express.Request, response: Express.Response) => {
+    
+    try{
+        const connection = Database.Connection;
+        const rows = await connection.query<RowDataPacket[]>('SELECT  * FROM Event;');
+        response.send(rows[0]);
+        await connection.end();
+    }catch(error){
+        response.send(error);
+    }
 })
 
-
-
-const start = async () => {
-    try{
-        await server.listen({ port: 3000 })
-    }catch(error){
-        server.log.error(error);
-        process.exit(1);
-    }
-}
-
-start();
+app.listen(3000);

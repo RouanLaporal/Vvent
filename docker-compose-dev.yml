@@ -1,5 +1,5 @@
 services:
-  Vvent-database:
+  database:
     image: mariadb
     restart: always
     ports:
@@ -14,6 +14,6 @@ services:
       - ./database/database-data:/var/lib/mysql
       - ./database/mariadb.cnf:/etc/mysql/mariadb.cnf
       # Pointer vers un dossier qui aura des scripts d'initialisation de notre base
-      #- ./database/dev-initdb.d:/docker-entrypoint-initdb.d
+      - ./database/dev-initdb.d:/docker-entrypoint-initdb.d
       # Ajouter le DDL qui va tourner en dernier
       - ./database/ddl/ddl.sql:/docker-entrypoint-initdb.d/999-ddl.sql

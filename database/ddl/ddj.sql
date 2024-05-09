@@ -1,4 +1,5 @@
 CREATE TABLE Event(
+    event_id int PRIMARY KEY NOT NULL AUTO_INCREMENT,
     event_date Date,
     event_title varchar(50),
     event_description  varchar(50),
